@@ -30,6 +30,9 @@ def get_progress(task_id):
 
 
 def report(task_id, progress=None, message=None, status=None, result=None):
+    if task_id is None:
+        # print("Warning: report called without task_id. Progress update will be ignored.")
+        return
     with _lock:
         
         data = _progress.get(task_id)
@@ -53,22 +56,4 @@ def report(task_id, progress=None, message=None, status=None, result=None):
             _progress[task_id] = data
         print(f"Reported progress for {task_id}: {_progress} \n")
 
-# # -------- For Debug -------- 
 
-# def consume_progress(task_id):
-#     for update in get_progress(task_id):
-#         # print("PROGRESS:", update, end="")
-#         yield update
-
-# report("test", progress=0.0, message="Starting", status="in_progress")
-
-# # Lancer la surveillance dans un thread
-# Thread(target=consume_progress, args=("test",), daemon=True).start()
-
-# report("test", progress=0.5, message="Halfway", status="in_progress")
-# time.sleep(1)
-# report("test", progress=0.75, message="Almost", status="in_progress")
-# time.sleep(2)
-# report("test", progress=0.9, message="Ninety", status="in_progress")
-# time.sleep(1)
-# report("test", progress=1.0, message="Done", status="completed", result={"data": [1, 2, 3]})

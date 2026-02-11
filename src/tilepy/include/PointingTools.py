@@ -1423,7 +1423,7 @@ def ComputeProbability2D(
     return P_GW, targetCoord, ipixlist, ipixlistHR
 
 
-def SubstractPointings2D(tpointingFile, prob, obspar, pixlist, pixlistHR):
+def SubstractPointings2D(tpointingFile, prob, obspar, pixlist, pixlistHR): # todo: add monitoring
     nside = obspar.reducedNside
     radius = obspar.FOV
 
@@ -2149,7 +2149,7 @@ def ComputeProbPGALIntegrateFoV(
     return P_Gal, P_GW, noncircleGal, talreadysumipixarray
 
 
-def GetRegionPixReduced(hpxx, percentage, Nnside):
+def GetRegionPixReduced(hpxx, percentage, Nnside): # todo: add monitoring 
     nside = Nnside  # size of map used for contour determination
     hpx = hp.ud_grade(
         hpxx, nside_out=nside, power=-2, order_in="Nested", order_out="Nested"
