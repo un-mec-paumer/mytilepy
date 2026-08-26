@@ -186,9 +186,10 @@ class SkyMap:
             return self.rasterized_map_cache[cache_entry]
 
         if mapType == "prob_density":
+            output_scheme = "NESTED" if self.is_nested else "RING"
             self.rasterized_map_cache[cache_entry] = (
                 self.raw_map_prob_density.rasterize(
-                    nside=nside, scheme=self.scheme
+                    nside=nside, scheme=output_scheme
                 ).data
             )
         elif mapType == "prob":
