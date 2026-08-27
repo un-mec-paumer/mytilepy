@@ -226,7 +226,7 @@ def PGWinFoV(skymap, nameEvent, obspar, dirName, task_id=None):
                 if not obspar.secondRound:
                     if P_GW <= obspar.minProbcut:
                         logger.info(
-                            f"Condition not met at {ObservationTime}: Pgw= {P_GW.quantity[0]:.4f} must be greater than ({obspar.minProbcut:.4f})"
+                            f"Condition not met at {ObservationTime}: Pgw= {float(P_GW):.4f} must be greater than ({obspar.minProbcut:.4f})"
                         )
                 if (P_GW <= obspar.minProbcut) and obspar.secondRound:
                     # Try Round 2
@@ -246,7 +246,7 @@ def PGWinFoV(skymap, nameEvent, obspar, dirName, task_id=None):
                     )
                     if P_GW <= obspar.minProbcut:
                         logger.info(
-                            f"Condition not met at {ObservationTime}: Pgw= {P_GW.quantity[0]:.4f} must be greater than ({obspar.minProbcut:.4f})"
+                            f"Condition not met at {ObservationTime}: Pgw= {float(P_GW):.4f} must be greater than ({obspar.minProbcut:.4f})"
                         )
                     else:
                         Round.append(2)

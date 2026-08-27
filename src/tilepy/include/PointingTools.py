@@ -1413,7 +1413,15 @@ def ComputeProbability2D(
 
     P_GW = sortcat["PIXFOVPROB"][:1]
 
-    if P_GW >= minProbcut:
+    if len(P_GW) == 0:
+        logger.warning(
+            f"No valid pixels found for time {time}. This may be due to all pixels being occulted or already observed."
+        )
+        return 0.0, None, ipixlist, ipixlistHR
+
+    print(f"Time: {time}, Max Probability in FoV: {P_GW[0]:.6f}, Target RA: {targetCoord.ra.deg[0]:.6f}, Target Dec: {targetCoord.dec.deg[0]:.6f}")
+
+    if P_GW[0] >= minProbcut:
         phip = float(np.deg2rad(targetCoord.ra.deg))
         thetap = float(0.5 * np.pi - np.deg2rad(targetCoord.dec.deg))
         xyz = hp.ang2vec(thetap, phip)
