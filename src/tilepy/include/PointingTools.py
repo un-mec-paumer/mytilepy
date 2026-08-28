@@ -1307,7 +1307,15 @@ def ComputeProbability2D(
     ipixlistOcc=None,
 ):
     """
-    Compute probability in 2D by taking the highest probability in FoV value
+    Compute probability in 2D by taking the highest probability in FoV value.
+
+    Returns
+    -------
+    (P_GW, targetCoord, ipixlist, ipixlistHR)
+        ``P_GW`` is the probability contained in the FoV of the best tile
+        (a plain ``float``) and ``targetCoord`` its centre (a scalar
+        ``SkyCoord``). When no pixel survives the visibility / already-observed
+        / occultation masks, returns ``(0.0, None, ipixlist, ipixlistHR)``.
     """
 
     reducedNside = obspar.reducedNside
@@ -1401,11 +1409,25 @@ def ComputeProbability2D(
     sortcat = sortcat2[np.flipud(np.argsort(sortcat2["PIXFOVPROB"]))]
 
     # Chose highest
+    P_GW = sortcat["PIXFOVPROB"][:1]
+
+    if len(P_GW) == 0:
+        logger.warning(
+            f"No valid pixels found for time {time}. "
+            "This may be due to all pixels being occulted or already observed."
+        )
+        return 0.0, None, ipixlist, ipixlistHR
+
+    # From here on P_GW is a plain float and targetCoord a scalar SkyCoord.
+    P_GW = float(P_GW[0])
     targetCoord = co.SkyCoord(
-        sortcat["PIXRA"][:1], sortcat["PIXDEC"][:1], frame="icrs", unit=(u.deg, u.deg)
+        sortcat["PIXRA"][0], sortcat["PIXDEC"][0], frame="icrs", unit=(u.deg, u.deg)
     )
 
-    P_GW = sortcat["PIXFOVPROB"][:1]
+    logger.debug(
+        f"Time: {time}, Max Probability in FoV: {P_GW:.6f}, "
+        f"Target RA: {targetCoord.ra.deg:.6f}, Target Dec: {targetCoord.dec.deg:.6f}"
+    )
 
     if P_GW >= minProbcut:
         phip = float(np.deg2rad(targetCoord.ra.deg))
