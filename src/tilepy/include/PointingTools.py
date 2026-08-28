@@ -1413,7 +1413,9 @@ def ComputeProbability2D(
         )
         return 0.0, None, ipixlist, ipixlistHR
 
-    print(f"Time: {time}, Max Probability in FoV: {P_GW[0]:.6f}, Target RA: {targetCoord.ra.deg[0]:.6f}, Target Dec: {targetCoord.dec.deg[0]:.6f}")
+    print(
+        f"Time: {time}, Max Probability in FoV: {P_GW[0]:.6f}, Target RA: {targetCoord.ra.deg[0]:.6f}, Target Dec: {targetCoord.dec.deg[0]:.6f}"
+    )
 
     if P_GW[0] >= minProbcut:
         phip = float(np.deg2rad(targetCoord.ra.deg))
